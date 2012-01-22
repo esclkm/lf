@@ -38,26 +38,26 @@ if (count($cot_extrafields[$db_pages]) > 0)
 
 function generate_sql_query($sql_field, $sql_prt, $type)
 {
-	$sql_field = 'page_'.$sql_field;
+	$sql_field = 'page_' . $sql_field;
 	if (!empty($sql_prt))
 	{
 		switch ($type)
 		{
 			case 'isset':
-				$sql_tstr = $sql_field." <> '' OR ".$sql_field." <> '0'";
+				$sql_tstr = $sql_field . " <> '' OR " . $sql_field . " <> '0'";
 				break;
 			case 'like':
 				$words = explode(' ', $sql_prt);
-				$sql_prt = '%'.implode('%', $words).'%';
-				$sql_tstr = $sql_field." LIKE '".$sql_prt."'";
+				$sql_prt = '%' . implode('%', $words) . '%';
+				$sql_tstr = $sql_field . " LIKE '" . $sql_prt . "'";
 				break;
 			case 'more':
 				$sql_prt = cot_import($sql_prt, 'D', 'NUM');
-				$sql_tstr = ($sql_prt !='') ? $sql_field." >= ".(double)$sql_prt : "";
+				$sql_tstr = ($sql_prt != '') ? $sql_field . " >= " . (double) $sql_prt : "";
 				break;
 			case 'less':
 				$sql_prt = cot_import($sql_prt, 'D', 'NUM');
-				$sql_tstr = ($sql_prt !='') ? $sql_field." <= ".(double)$sql_prt : "";
+				$sql_tstr = ($sql_prt != '') ? $sql_field . " <= " . (double) $sql_prt : "";
 				break;
 			case 'array':
 				if (is_array($sql_prt))
@@ -70,20 +70,41 @@ function generate_sql_query($sql_field, $sql_prt, $type)
 							$sql_tprt[] = $v;
 						}
 					}
-					$sql_tstr = $sql_field." IN ('".implode("', '", $sql_tprt)."')";
+					$sql_tstr = $sql_field . " IN ('" . implode("', '", $sql_tprt) . "')";
 				}
 				else
 				{
-					$sql_tstr = $sql_field."='".$sql_prt."'";
+					$sql_tstr = $sql_field . "='" . $sql_prt . "'";
 				}
 				break;
 			case 'is':
 			default:
-				$sql_tstr = $sql_field."='".$sql_prt."'";
+				$sql_tstr = $sql_field . "='" . $sql_prt . "'";
 				break;
 		}
 	}
 	return($sql_tstr);
+}
+
+$lf_pages_cat_list['all'] = $L['All'];
+$lfcatlist = cot_structure_children('page', $c);
+
+foreach ($lfcatlist as $lfcat)
+{
+	$lf_pages_cat_list[$lfcat] = $structure['page'][$lfcat]['title'];
+}
+
+function cot_lf_selectcat($cat)
+{
+	global $structure, $sys, $cfg, $db;
+	$lf_pages_cat_list['all'] = $L['All'];
+	$lfcatlist = cot_structure_children('page', $cat);
+
+	foreach ($lfcatlist as $lfcat)
+	{
+		$lf_pages_cat_list[$lfcat] = $structure['page'][$lfcat]['title'];
+	}
+	return cot_selectbox((!isset($lf['lfcat'])) ? 'all' : $lf['lfcat'], 'lf[lfcat][]', array_keys($lf_pages_cat_list), array_values($lf_pages_cat_list), false, ' multiple="multiple" style="width:50%"');
 }
 
 ?>

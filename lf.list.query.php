@@ -17,13 +17,6 @@ defined('COT_CODE') or die('Wrong URL');
 
 require_once cot_incfile('lf', 'plug');
 global $lf_fields;
-$lf_pages_cat_list['all'] = $L['All'];
-$lfcatlist = cot_structure_children('page', $c);
-
-foreach ($lfcatlist as $lfcat)
-{
-	$lf_pages_cat_list[$lfcat] = $structure['page'][$lfcat]['title'];
-}
 
 if (is_array($_GET['lf']))
 {

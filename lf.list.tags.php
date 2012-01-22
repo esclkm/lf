@@ -61,6 +61,7 @@ foreach ($lf_fields as $row)
 				'LIST_FILTERS_'.$uname => cot_selectbox((isset($lf[$row['field_name']])) ? $lf[$row['field_name']] : 2, 'lf['.$row['field_name'].']', range(0, 2), $cfg_params_titles, false),
 				'LIST_FILTERS_'.$uname.'_CHECK' => cot_checkbox((isset($lf[$row['field_name']])) ? $lf[$row['field_name']] : 0, 'lf['.$row['field_name'].']', isset($L['page_'.$row['field_name'].'_title']) ? $L['page_'.$row['field_name'].'_title'] : $row['field_description'])
 			));
+			$R['input_checkbox'] = $R['checkbox_res'];
 			break;
 		case 'select':
 		case 'radio':
